@@ -6,33 +6,31 @@ OG-SPACE relies on an optimized Gillespie algorithm for a large number of cells 
 # Implementation 
 
 # OGA
-OGA, the following lists are needed:<img src="https://render.githubusercontent.com/render/math?math=\mathcal{V}_i"> the list of nodes occupied by the $i^\text{th}$ type of particle (i.e., subpopulation) present in the lattice and $\mathcal{N}_l$ the list of the neighbours of each node in the network. The related pseudo-code of is presented as \textbf{Algorithm 1}.
+OGA, the following lists are needed:<img src="https://render.githubusercontent.com/render/math?math=\mathcal{V}_i"> the list of nodes occupied by the <img src="https://render.githubusercontent.com/render/math?math=i^\text{th}"> type of particle (i.e., subpopulation) present in the lattice and <img src="https://render.githubusercontent.com/render/math?math=\mathcal{N}_l"> the list of the neighbours of each node in the network. The related pseudo-code of is presented as Algorithm 1.
 
 
 # Generating the Phylogeny and the genotype of the sampled cells and the 
 
-After the simulation,OG-SPACE generates the list $\mathcal{S}_{n_{\text{fin}}}$ of sampled cells composed by a user-selected number of randomly distributed cells or cells that falls in a circular (2D scenario)/spherical (3D scenario) region with a user-selected radius.
-Then,OG-SPACE reconstructs the phylogenetic tree of the sampled cells and their genotypes by computing the \emph{tree of the genealogy of the sampled cells} $\mathcal{G}=(V,E)$. 
-In $\mathcal{G}$ the set of the nodes $V$ is composed by the nodes of degree  $1$ (i.e., the sampled cells $\mathcal{S}_{n_{\text{fin}}}$ ) and by the nodes of degree $2$ or $3$ that are ancestors of the sampled cells. The set of edges $E$ represent the parental relations between cells.
-To reconstruct $\mathcal{G}=(V,E)$,
-OG-SPACE saves the following lists: $\mathcal{PA}_m$, i.e.,  the label of the parental cell of the $m^{\text{th}}$  event,  $\mathcal{DA}_m$ the list of the labels of the two nodes occupied, and  $\mathcal{T}_m$  the time. \textcolor{black}{Then,  it scrolls backwards the lists   $\mathcal{PA}_m$ and   $\mathcal{DA}_m$, and it obtains $\mathcal{G}=(V,E)$  by registering the not phantom events that are in the past of the sampled cells.}
-Since the nodes of $\mathcal{G}$ with degree $3$ are the internal nodes of a  phylogenetic tree, whereas the nodes with degree $1$ are either the root or the leaves of such tree. 
-Therefore, by deleting all the nodes with degree equal to $2$ of $\mathcal{G}$ and redrawing the edges between the remaining node coherently, OG-SPACE obtains the phylogenetic tree of the sampled cells $\mathcal{S}_{n_{\text{fin}}}$. 
+After the simulation,OG-SPACE generates the list <img src="https://render.githubusercontent.com/render/math?math=\mathcal{S}_{n_{\text{fin}}}"> of sampled cells composed by a user-selected number of randomly distributed cells or cells that falls in a circular (2D scenario)/spherical (3D scenario) region with a user-selected radius.
+Then, OG-SPACE reconstructs the phylogenetic tree of the sampled cells and their genotypes by computing the \emph{tree of the genealogy of the sampled cells} <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}=(V,E)">. 
+To reconstruct <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}=(V,E)">, OG-SPACE saves the following lists: <img src="https://render.githubusercontent.com/render/math?math=\mathcal{PA}_m">, i.e.,  the label of the parental cell of the <img src="https://render.githubusercontent.com/render/math?math=m^{\text{th}}">  event,  <img src="https://render.githubusercontent.com/render/math?math=\mathcal{DA}_m"> the list of the labels of the two nodes occupied, and  <img src="https://render.githubusercontent.com/render/math?math=\mathcal{T}_m">  the time.
+OG-SPACE then applies the algorithm presented in Table Algorithm 2 to finally obtain <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}=(V,E)">
 
 
 
-It is important to note that, since the nodes of $\mathcal{G}$ with degree $3$ are \emph{coalescent events},  they also represent the internal nodes of a standard phylogenetic tree, whereas the nodes with degree $1$ are either the root or the leaves of such tree. 
-Therefore, by deleting all the nodes with degree equal to $2$ of $\mathcal{G}$ and redrawing the edges between the remaining node coherently, it is easy to obtain the phylogenetic tree of the sampled cells $\mathcal{S}_{n_{\text{fin}}}$ (see Figure 1). 
-% subistituion models 
-\subsection{\textbf{Genotype of the sampled cells}}
+Therefore, by deleting all the nodes with degree equal to 2 of <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}"> and redrawing the edges between the remaining node coherently, OG-SPACE obtains the phylogenetic tree of the sampled cells <img src="https://render.githubusercontent.com/render/math?math=\mathcal{S}_{n_{\text{fin}}}">. 
+
+
+
+It is important to note that, since the nodes of <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}"> with degree 3 are coalescent events,  they also represent the internal nodes of a standard phylogenetic tree, whereas the nodes with degree 1 are either the root or the leaves of such tree. 
+Therefore, by deleting all the nodes with degree equal to 2 and redrawing the edges between the remaining node coherently, it is easy to obtain the phylogenetic tree of the sampled cells . 
+
 As specified in the Background section, the large majority of mutations that can hit a given cell during its lifetime have no functional effect (i.e., they are passengers). 
 From the computational perspective, it would be fallacious to explicitly consider the accumulation of such mutations during the simulations. 
 However, the VAF spectrum generated by considering drivers only would be insufficient ad unrealistic. 
-
-
-For these reasons, OG-SPACE implements an \emph{a posteriori} attachment of neutral mutations to the cells of a simulation. 
-Supposing that the Infinite Site Assumption holds, OG-SPACE assigns to each edge of $\mathcal{G}$ a number of mutations via a Bernoulli trial, where the number of trials is the length of the genome and the probability of success (i.e., the emergence of a new neutral mutation ) is defined via
-a user-selected parameter $\mu_\text{neut}$. 
+For these reasons, OG-SPACE implements an a posteriori attachment of neutral mutations to the cells of a simulation. 
+Supposing that the Infinite Site Assumption holds, OG-SPACE assigns to each edge of <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}"> a number of mutations via a Bernoulli trial, where the number of trials is the length of the genome and the probability of success (i.e., the emergence of a new neutral mutation ) is defined via
+a user-selected parameter <img src="https://render.githubusercontent.com/render/math?math=\mu_\text{neut}">. 
 By associating a unique label for each mutation, it is then possible to retrieve the genotype of each sample by first enumerating the edges of the paths between the root and a leaf of the tree (i.e., a sampled cell) and then associating all the mutations present on the edges of such path to the cell.
 
 # REQUIRED  SOFTWARE AND PACKAGE
