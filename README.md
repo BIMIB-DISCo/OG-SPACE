@@ -4,9 +4,12 @@ Optimized Gillespie algorithm for simulating  Stochastic sPAtial models of Cance
 OG-SPACE relies on an optimized Gillespie algorithm for a large number of cells able to handle a variety of Birth-Death processes on a lattice and an efficient procedure to reconstruct the phylogenetic tree and the genotype of the sampled cells. 
 
 # Implementation 
+OG-SPACE employs the efficient strategy to decouple the simulation of the Birth-death process on a lattice and the genetic evolution of the sequence of the cells.
+Here we present a brief description of the algorithms used to simulate such a system.
 
 # OGA
-OGA, the following lists are needed:<img src="https://render.githubusercontent.com/render/math?math=\mathcal{V}_i"> the list of nodes occupied by the <img src="https://render.githubusercontent.com/render/math?math=i^\text{th}"> type of particle (i.e., subpopulation) present in the lattice and <img src="https://render.githubusercontent.com/render/math?math=\mathcal{N}_l"> the list of the neighbours of each node in the network. The related pseudo-code of is presented as Algorithm 1.
+To simulate the spatial dynamics of a multi-type BD process on a lattice the following lists are needed:<img src="https://render.githubusercontent.com/render/math?math=\mathcal{V}_i"> the list of nodes occupied by the <img src="https://render.githubusercontent.com/render/math?math=i^\text{th}"> type of particle (i.e., subpopulation) present in the lattice and <img src="https://render.githubusercontent.com/render/math?math=\mathcal{N}_l"> the list of the neighbours of each node in the network. The related pseudo-code of is presented as Algorithm 1.
+![image](https://user-images.githubusercontent.com/43064628/138437810-6328efd2-1eff-48ba-a7ef-802a63458f93.png)
 
 
 # Generating the Phylogeny and the genotype of the sampled cells and the 
