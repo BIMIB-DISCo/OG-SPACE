@@ -8,8 +8,16 @@ OG-SPACE employs the efficient strategy to decouple the simulation of the Birth-
 Here we present a brief description of the algorithms used to simulate such a system.
 
 # OGA
-To simulate the spatial dynamics of a multi-type BD process on a lattice the following lists are needed:<img src="https://render.githubusercontent.com/render/math?math=\mathcal{V}_i"> the list of nodes occupied by the <img src="https://render.githubusercontent.com/render/math?math=i^\text{th}"> type of particle (i.e., subpopulation) present in the lattice and <img src="https://render.githubusercontent.com/render/math?math=\mathcal{N}_l"> the list of the neighbours of each node in the network. The related pseudo-code of is presented as Algorithm 1.
-![image](https://user-images.githubusercontent.com/43064628/138437810-6328efd2-1eff-48ba-a7ef-802a63458f93.png)
+To simulate the spatial dynamics of a multi-type BD process on a lattice via an OGA the following lists are needed:<img src="https://render.githubusercontent.com/render/math?math=\mathcal{V}_i"> the list of nodes occupied by the <img src="https://render.githubusercontent.com/render/math?math=i^\text{th}"> type of particle (i.e., subpopulation) present in the lattice and <img src="https://render.githubusercontent.com/render/math?math=\mathcal{N}_l"> the list of the neighbours of each node in the network.
+
+Then, to evaluate the dynamics OG-SPACE employs the Algorithm 1.
+![image](https://user-images.githubusercontent.com/43064628/138439742-cbd216ca-c88c-4f3b-ba66-3c74c7c030a3.png)
+
+
+Where,<img src="https://render.githubusercontent.com/render/math?math=Nu()">  indicated the number of elements of a set ,<img src="https://render.githubusercontent.com/render/math?math=Z^d"> is the lattice, <img src="https://render.githubusercontent.com/render/math?math=T_{max}"> the time of the simulation, <img src="https://render.githubusercontent.com/render/math?math=\alpha">   the birth rate of the wild-type cells,  <img src="https://render.githubusercontent.com/render/math?math=\beta">  the death rate of the cells,  <img src="https://render.githubusercontent.com/render/math?math=\mu_\text{dri}"> the probabilty to acquire a new driver mutation, and  <img src="https://render.githubusercontent.com/render/math?math=\bar{\alpha}_\text{dri}"> and  <img src="https://render.githubusercontent.com/render/math?math=\sigma^2"> are the parameters of the distribution of the birth adavantage given by a driver mutation.   
+
+The step "Evaluate if the event is a phantom event" is different for every contact rule included in the current implementation of OG-SPACE.
+For the contact process, the algorithm checks if y is empty; in the voter model, if the state of x is different from the state of y; in the hierarchical voter model, if x$bears more driver mutations respect to y. If one of these conditions is true, then the event is flagged as not phantom.
 
 
 # Generating the Phylogeny and the genotype of the sampled cells and the 
@@ -19,6 +27,7 @@ Then, OG-SPACE reconstructs the phylogenetic tree of the sampled cells and their
 To reconstruct <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}=(V,E)">, OG-SPACE saves the following lists: <img src="https://render.githubusercontent.com/render/math?math=\mathcal{PA}_m">, i.e.,  the label of the parental cell of the <img src="https://render.githubusercontent.com/render/math?math=m^{\text{th}}">  event,  <img src="https://render.githubusercontent.com/render/math?math=\mathcal{DA}_m"> the list of the labels of the two nodes occupied, and  <img src="https://render.githubusercontent.com/render/math?math=\mathcal{T}_m">  the time.
 OG-SPACE then applies the algorithm presented in Table Algorithm 2 to finally obtain <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}=(V,E)">
 
+![image](https://user-images.githubusercontent.com/43064628/138438185-13ba6f62-9d6f-4d37-9b2f-29daa13639fd.png)
 
 
 Therefore, by deleting all the nodes with degree equal to 2 of <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}"> and redrawing the edges between the remaining node coherently, OG-SPACE obtains the phylogenetic tree of the sampled cells <img src="https://render.githubusercontent.com/render/math?math=\mathcal{S}_{n_{\text{fin}}}">. 
