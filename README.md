@@ -15,6 +15,9 @@ OG-SPACE provides as outputs:
 - the mutational tree of the driver mutations (if present), where the nodes represent the mutations and edges model the accumulation temporal direction;
 -  the noisy  genotype of the sampled cells obtained by simulating the errors of a sc-DNA-seq experiment;
 -  the noisy VAF spectrum of the sampled cells obtained by simulating the errors of bulk DNA-seq experiment.
+
+
+
 The inputs of  OG-SPACE are described below. 
  
 # Implementation 
