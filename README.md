@@ -6,7 +6,7 @@ OG-SPACE relies on an optimized Gillespie algorithm for a large number of cells 
 # Implementation 
 
 # OGA
-OGA, the following lists are needed:<img src="https://render.githubusercontent.com/render/math?math=\mathcal{V}_i> the list of nodes occupied by the $i^\text{th}$ type of particle (i.e., subpopulation) present in the lattice and $\mathcal{N}_l$ the list of the neighbours of each node in the network. The related pseudo-code of is presented as \textbf{Algorithm 1}.
+OGA, the following lists are needed:<img src="https://render.githubusercontent.com/render/math?math=\mathcal{V}_i"> the list of nodes occupied by the $i^\text{th}$ type of particle (i.e., subpopulation) present in the lattice and $\mathcal{N}_l$ the list of the neighbours of each node in the network. The related pseudo-code of is presented as \textbf{Algorithm 1}.
 
 
 # Generating the Phylogeny and the genotype of the sampled cells and the 
