@@ -8,13 +8,13 @@ After simulating the dynamics,
 OG-SPACE mimics sequencing and variant calling of a portion of cells (e.g., a biopsy), at either the the bulk or the single-cell resolution, with the possibility of including experiment-specific errors in the simulated output data. 
  
 OG-SPACE provides as outputs: 
-      - the state of the lattice at any time of the simulation;
-     -  the Ground Truth (GT) genotype of the sampled cells;
-      - the  GT  Variant Allele Frequency (VAF) spectrum of the sampled cells;
-      - the GT phylogenetic  tree  of the sampled cells, in which the leaves represent the cells, whereas the internal nodes represent the most recent common ancestors;
-      - the mutational tree of the driver mutations (if present), where the nodes represent the mutations and edges model the accumulation temporal direction;
-      -  the noisy  genotype of the sampled cells obtained by simulating the errors of a sc-DNA-seq experiment;
-     -  the noisy VAF spectrum of the sampled cells obtained by simulating the errors of bulk DNA-seq experiment.
+- the state of the lattice at any time of the simulation;
+- the Ground Truth (GT) genotype of the sampled cells;
+- the  GT  Variant Allele Frequency (VAF) spectrum of the sampled cells;
+- the GT phylogenetic  tree  of the sampled cells, in which the leaves represent the cells, whereas the internal nodes represent the most recent common ancestors;
+- the mutational tree of the driver mutations (if present), where the nodes represent the mutations and edges model the accumulation temporal direction;
+-  the noisy  genotype of the sampled cells obtained by simulating the errors of a sc-DNA-seq experiment;
+-  the noisy VAF spectrum of the sampled cells obtained by simulating the errors of bulk DNA-seq experiment.
 The inputs of  OG-SPACE are described below. 
  
 # Implementation 
