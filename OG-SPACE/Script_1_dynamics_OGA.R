@@ -165,6 +165,7 @@ count_of_events_2 <- 0
 
 
 while (time < Tmax && tot_pop_old != 0) {
+  
   count_of_events_2 <- count_of_events_2 + 1
   
   ## Loading last state of the network except for t == 0
@@ -237,10 +238,6 @@ while (time < Tmax && tot_pop_old != 0) {
   
   lambda = alpha_fin + beta_fin
   
-  ## Renormalization of prob of single event
-  
-  birth = alpha_fin / lambda
-  death = beta_fin / lambda
   
   
   ## Time of the next event
@@ -261,23 +258,78 @@ while (time < Tmax && tot_pop_old != 0) {
   
   ## MC move
   
-  if (random_number <= birth) {
-    ## The event is a birth
+  
+  ###### Generation of the list of moves
+  
+  
+  ## Renormalization of prob of single events
+  
+  birth = unlist(alpha_tot)/ lambda
+  
+  death = beta_fin / lambda
+
+  # probability vector
+  prob_vet <- append(unlist(birth),death)
+  prob_cum <- cumsum( prob_vet)
+  
+  ### Moves
+  #subpop that makes a move
+  target_subpop <- min(which(random_number <= prob_cum))
+  
+  ### the event is a death
+  if(target_subpop==num_of_pop+1){
     
-    ## selecting a random occupied node with at least one free neighbor
+    count_of_events <- count_of_events + 1
     
     random_node <-
-      possible_nodes[sample(1:length(possible_nodes), 1)][[1]][1]
+      unlist(list_node_occ)[sample(1:length(unlist(list_node_occ)), 1)]
+    
+    new_state[1, random_node] <- 0
+    
+    ## The node label must be changed
+    
+    colnames(new_state)[random_node] <-
+      paste(labels(new_state[, random_node]), "*", sep = "")
+    
+    events[[count_of_events]] <-
+      c("D",
+        new_state[1, random_node], 
+        labels(new_state[1, random_node]),
+        NA,
+        time)
+    
+    
+    
+  }else{
+    
+    ## The event is a birth 
+    
+    
+    ## selecting a random occupied node by the target sub pop
+  
+    if(length(list_node_occ[[target_subpop]])==1){
+      
+      random_node <- list_node_occ[[target_subpop]]
+      
+    }else{
+      
+      
+      
+      random_node <- sample(size=1,x=list_node_occ[[target_subpop]])    
+      
+    }
+  
+      
     
     ## the neighbors of the random node
     
     NN <- unlist(list_nn[random_node])
     
     
-    ## list of free neighbors
+    ## random jump
     
     
-    jump <- sample(NN, 1)
+    jump <- sample(x=NN,size= 1)
     
     
     ## Changing rule in function of the selected interaction rule
@@ -293,16 +345,18 @@ while (time < Tmax && tot_pop_old != 0) {
     if ( simulate_process == "h_voter") {
       if( new_state[1, jump] == 0){
         rule <- T
-        }else{    
-                rule <- as.numeric(
-                  n_of_driver_for_sub_pop[[new_state[1, jump]]]) < 
-                  as.numeric(n_of_driver_for_sub_pop[[new_state[1, random_node]]])
-              }
+      }else{    
+        rule <- as.numeric(
+          n_of_driver_for_sub_pop[[new_state[1, jump]]]) < 
+          as.numeric(n_of_driver_for_sub_pop[[new_state[1, random_node]]])
+      }
     }
     
     
     
     if (rule == T) {
+      
+      
       count_of_events <- count_of_events + 2
       
       ## Asymmetric generation of driver mutation. If a birth occurs
@@ -348,8 +402,8 @@ while (time < Tmax && tot_pop_old != 0) {
         
         ## Creating the new driver alpha gaussian advantage
         
-        alpha_driv[[as.numeric(length(alpha_driv) + 1)]] <-
-          alpha_driv[[new_state[1, random_node]]] +
+        alpha_driv[[ new_state[1, jump]]] <-
+          alpha_driv[[target_subpop]] +
           rnorm(1, mean = driv_average_advantage, 
                 sd = driv_average_advantage / 2)
         ## 
@@ -385,29 +439,10 @@ while (time < Tmax && tot_pop_old != 0) {
           )
       }
     }
-  } else {
-    ## The event is a death
     
-    count_of_events <- count_of_events + 1
-    
-    random_node <-
-      unlist(list_node_occ)[sample(1:length(unlist(list_node_occ)), 1)]
-    
-    new_state[1, random_node] <- 0
-    
-    ## The node label must be changed
-    
-    colnames(new_state)[random_node] <-
-      paste(labels(new_state[, random_node]), "*", sep = "")
-    
-    events[[count_of_events]] <-
-      c("D",
-        new_state[1, random_node], 
-        labels(new_state[1, random_node]),
-        NA,
-        time)
   }
   
+
   ## Storing state
   ## Necessary for part 2
   
